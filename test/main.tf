@@ -1,7 +1,7 @@
-#Work in Progress
+# Work in Progress
 # creating one template that will work for both
-
-resource "null_resource" "vm_configuration" {
+# Add a conditional statement or run both on vm
+resource "null_resource" "vm_configuration_linux" {
   connection {
       type     = "${var.connection_type}"
       user     = "${var.user_name}"
@@ -28,8 +28,15 @@ resource "null_resource" "vm_configuration" {
       "chmod +x /tmp/addhost.sh; bash /tmp/addhost.sh"
     ]
   }
+}
 
-
+resource "null_resource" "vm_configuration_windows" {
+  connection {
+      type     = "${var.connection_type}"
+      user     = "${var.user_name}"
+      password = "${var.password}"
+      host     = "${var.host_ip}"
+  }
 	# Execute the script remotely
   provisioner "remote-exec" {
     inline = [  
