@@ -10,13 +10,16 @@ resource "null_resource" "vm_configuration_linux" {
   }
   provisioner "file" {
       content = <<EOF
-      with open("/etc/hosts", "a+") as file_object:
-        file_object.seek(0)
-        data = file_object.read(100)
-        if len(data) > 0 :
-          file_object.write("\n")
-        file_object.write("hello hi")
-        file_object.close()
+      try:
+        with open("/etc/hosts", "a+") as file_object:
+          file_object.seek(0)
+          data = file_object.read(100)
+          if len(data) > 0 :
+            file_object.write("\n")
+          file_object.write("hello hi")
+          file_object.close()
+      except:
+        print('authorization error, please use user with admin authorization')
 
       EOF
       destination = "/tmp/addshost.py"
